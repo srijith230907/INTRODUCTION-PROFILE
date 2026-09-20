@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-black">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Srijith Srivathsa | AI & ML Engineer</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        neon: {
+                            red: '#ff003c',
+                            blue: '#00e5ff'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --neon-red-glow: rgba(255, 0, 60, 0.7);
+            --neon-blue-glow: rgba(0, 229, 255, 0.5);
+            --carbon-dark: #070707;
+        }
+
+        /* STRICT ANTI-COPY MEASURES */
+        body {
+            background-color: var(--carbon-dark);
+            color: #f0f0f0;
+            overflow-x: hidden;
+            
+            /* Disable selection and dragging */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            
+            /* Hide default cursor globally */
+            cursor: none;
+        }
+
+        a, button, input, .interactive {
+            cursor: none !important;
+        }
+
+        ::selection { background-color: transparent; }
+        ::-moz-selection { background-color: transparent; }
+
+        /* Cinematic Background */
+        .cinematic-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .cinematic-bg video {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.30; /* Darkened for perfect text readability */
+            filter: contrast(110%) saturate(90%);
+        }
+
+        /* Carbon Fiber Overlay Texture */
+        .carbon-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -1;
+            background: 
+                radial-gradient(black 15%, transparent 16%) 0 0,
+                radial-gradient(black 15%, transparent 16%) 8px 8px,
+                radial-gradient(rgba(255,255,255,.05) 15%, transparent 20%) 0 1px,
+                radial-gradient(rgba(255,255,255,.05) 15%, transparent 20%) 8px 9px;
+            background-color: transparent;
+            background-size: 16px 16px;
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Taillight Cursor */
+        #cursor-dot {
+            position: fixed;
+            top: 0; left: 0;
+            width: 4px; height: 4px;
+            background-color: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px #fff;
+        }
+
+        #cursor-trail {
+            position: fixed;
+            top: 0; left: 0;
+            width: 20px; height: 20px;
+            background: rgba(255, 0, 60, 0.1);
+            border: 2px solid #ff003c;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px var(--neon-red-glow), inset 0 0 10px var(--neon-red-glow);
+            transition: border-radius 0.1s, background-color 0.2s;
+        }
+
+        .cursor-hover #cursor-trail {
+            background: rgba(0, 229, 255, 0.15);
+            border-color: #00e5ff;
+            box-shadow: 0 0 20px var(--neon-blue-glow), inset 0 0 10px var(--neon-blue-glow);
+            transform: translate(-50%, -50%) scale(1.5);
+            border-radius: 4px;
+        }
+
+        /* Spark Animations */
+        .exhaust-spark {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9997;
+            width: 3px; height: 10px;
+            background: linear-gradient(to top, #ff9d00, #ff003c);
+            border-radius: 2px;
+            animation: spark-fly 0.6s cubic-bezier(0.1, 1, 0.3, 1) forwards;
+            box-shadow: 0 0 10px #ff003c;
+        }
+
+        @keyframes spark-fly {
+            0% { transform: translate(-50%, -50%) rotate(var(--rot)) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0); opacity: 0; }
+        }
+
+        /* 3D Tilt Card Base Styles (Glassmorphism) */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease;
+            will-change: transform;
+            background: rgba(15, 15, 15, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .tilt-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--theme-color, #ff003c), transparent);
+            opacity: 0.6;
+            z-index: 10;
+        }
+
+        .tilt-content {
+            transform: translateZ(30px); /* Pushes content out in 3D space */
+        }
+
+        /* Scroll Reveals */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="cursor-dot"></div>
+    <div id="cursor-trail"></div>
+
+    <div class="cinematic-bg">
+        <!-- High-quality free sports car tunnel driving video -->
+        <video autoplay loop muted playsinline>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-fast-sports-car-driving-in-a-tunnel-41864-large.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="carbon-overlay"></div>
+
+    <div class="relative z-10">
+        
+        <!-- HEADER / HERO -->
+        <header class="min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24">
+            <div class="max-w-4xl reveal active">
+                <h1 class="text-6xl md:text-8xl lg:text-9xl font-display font-black mb-4 text-gradient interactive uppercase tracking-tighter leading-none">
+                    Srijith <br/>Srivathsa
+                </h1>
+                
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-1 bg-neon-red shadow-[0_0_10px_#ff003c]"></div>
+                    <h2 class="text-xl md:text-2xl font-medium text-gray-300 tracking-wide interactive">
+                        AI & Machine Learning Engineering Student
+                    </h2>
+                </div>
+                
+                <p class="text-base md:text-lg text-gray-400 max-w-2xl leading-relaxed font-light mb-10 interactive border-l-2 border-gray-800 pl-6 py-2">
+                    I am passionate about blending software intelligence with hardware innovation. Driven by a deep curiosity for modern technology, I build tangible, impactful solutions that bridge the digital and physical worlds.
+                </p>
+
+                <div class="flex gap-4">
+                    <a href="#about" class="interactive inline-flex items-center gap-3 px-8 py-4 bg-white/5 border border-white/10 hover:border-neon-red hover:bg-neon-red/10 text-white font-medium tracking-wider transition-all duration-300 uppercase text-sm group rounded-sm">
+                        View Profile 
+                        <i class="fas fa-chevron-down group-hover:translate-y-1 transition-transform text-neon-red"></i>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- ABOUT SECTION -->
+        <section id="about" class="py-24 px-6 md:px-16 lg:px-24 relative bg-black/70 border-t border-white/5">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <h2 class="text-4xl md:text-5xl font-display font-black text-white mb-8 uppercase tracking-wide">About <span class="text-neon-red">Me</span></h2>
+                    <p class="text-gray-300 leading-relaxed mb-6 font-light">
+                        I am an Artificial Intelligence and Machine Learning engineering student at the <strong class="text-white font-medium">Don Bosco Institute of Technology</strong> in Bengaluru, on track to graduate in June 2029. My academic and personal projects heavily focus on integrating complex software algorithms with functional physical hardware.
+                    </p>
+                    <p class="text-gray-300 leading-relaxed mb-8 font-light">
+                        Beyond university coursework, I am an active member of <strong class="text-neon-blue font-medium">GDG Bengaluru</strong>, where I collaborate with developers and stay engaged with the local tech community. I also run a YouTube channel, <strong class="text-white font-medium">The Gaming Groot</strong>, sharing my gaming experiences and connecting with a wider audience of digital enthusiasts.
+                    </p>
+                </div>
+                
+                <!-- SKILLS -->
+                <div class="reveal" style="transition-delay: 200ms;">
+                    <h3 class="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wide">Technical <span class="text-gray-500">Skills</span></h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-5 py-2.5 bg-black/80 border border-gray-800 text-gray-300 text-sm font-medium hover:border-neon-red hover:text-white hover:shadow-[0_0_15px_rgba(255,0,60,0.3)] transition-all duration-300 interactive rounded">Python</span>
+                        <span class="px-5 py-2.5 bg-black/80 border border-gray-800 text-gray-300 text-sm font-medium hover:border-neon-red hover:text-white hover:shadow-[0_0_15px_rgba(255,0,60,0.3)] transition-all duration-300 interactive rounded">C / C++</span>
+                        <span class="px-5 py-2.5 bg-black/80 border border-gray-800 text-gray-300 text-sm font-medium hover:border-neon-red hover:text-white hover:shadow-[0_0_15px_rgba(255,0,60,0.3)] transition-all duration-300 interactive rounded">HTML</span>
+                        <span class="px-5 py-2.5 bg-black/80 border border-gray-800 text-gray-300 text-sm font-medium hover:border-neon-red hover:text-white hover:shadow-[0_0_15px_rgba(255,0,60,0.3)] transition-all duration-300 interactive rounded">SQL</span>
+                        <span class="px-5 py-2.5 bg-black/80 border border-gray-800 text-gray-300 text-sm font-medium hover:border-neon-blue hover:text-white hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all duration-300 interactive rounded">Machine Learning</span>
+                        <span class="px-5 py-2.5 bg-black/80 border border-gray-800 text-gray-300 text-sm font-medium hover:border-neon-blue hover:text-white hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all duration-300 interactive rounded"><i class="fas fa-microchip mr-2 text-neon-blue"></i>Arduino Uno</span>
+                        <span class="px-5 py-2.5 bg-black/80 border border-gray-800 text-gray-300 text-sm font-medium hover:border-neon-blue hover:text-white hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all duration-300 interactive rounded"><i class="fas fa-wifi mr-2 text-neon-blue"></i>IoT / Embedded Systems</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS SECTION -->
+        <section class="py-24 px-6 md:px-16 lg:px-24 relative bg-black/50">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-6 mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl font-display font-black text-white uppercase tracking-wide">Featured <span class="text-neon-red">Projects</span></h2>
+                    <div class="flex-grow h-[1px] bg-gradient-to-r from-neon-red/50 to-transparent"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Smart Blind Stick -->
+                    <div class="tilt-card rounded-lg p-8 interactive reveal" style="--theme-color: #00e5ff;">
+                        <div class="tilt-content">
+                            <div class="text-neon-blue mb-6 text-3xl"><i class="fas fa-walking"></i></div>
+                            <h3 class="text-2xl font-bold text-white mb-2 font-display uppercase tracking-wide">Smart Blind Stick</h3>
+                            <p class="text-xs text-neon-blue tracking-widest uppercase font-bold mb-4">Hardware & IoT Integration</p>
+                            <p class="text-gray-400 text-sm leading-relaxed font-light">
+                                An assistive navigation device engineered using an Arduino Uno, ultrasonic sensors, and GSM/GPS modules. It includes a companion Android application to ensure safe and reliable navigation for visually impaired individuals.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- CivicSnap -->
+                    <div class="tilt-card rounded-lg p-8 interactive reveal" style="--theme-color: #ff003c; transition-delay: 150ms;">
+                        <div class="tilt-content">
+                            <div class="text-neon-red mb-6 text-3xl"><i class="fas fa-map-marked-alt"></i></div>
+                            <h3 class="text-2xl font-bold text-white mb-2 font-display uppercase tracking-wide">CivicSnap</h3>
+                            <p class="text-xs text-neon-red tracking-widest uppercase font-bold mb-4">VIBE2SHIP Hackathon</p>
+                            <p class="text-gray-400 text-sm leading-relaxed font-light">
+                                A geotagged community issue reporting web platform built and led during the VIBE2SHIP hackathon. It streamlines communication between local citizens and municipal problem-solving frameworks.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FlowSymphony -->
+                    <div class="tilt-card rounded-lg p-8 interactive reveal" style="--theme-color: #ffffff; transition-delay: 300ms;">
+                        <div class="tilt-content">
+                            <div class="text-white mb-6 text-3xl"><i class="fas fa-city"></i></div>
+                            <h3 class="text-2xl font-bold text-white mb-2 font-display uppercase tracking-wide">FlowSymphony</h3>
+                            <p class="text-xs text-gray-400 tracking-widest uppercase font-bold mb-4">Smart City Concept</p>
+                            <p class="text-gray-400 text-sm leading-relaxed font-light">
+                                An innovative urban transit proposal designed to tackle modern smart city mobility challenges. It outlines systemic improvements for traffic flow, public transport efficiency, and sustainable urban movement.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTENT CREATOR SECTION -->
+        <section class="py-24 px-6 md:px-16 lg:px-24 relative bg-gradient-to-t from-[#050505] to-black/70 border-t border-white/5">
+            <div class="max-w-4xl mx-auto text-center reveal">
+                <div class="inline-block p-5 rounded-full bg-red-600/10 border border-red-600/30 text-neon-red mb-6 shadow-[0_0_30px_rgba(255,0,60,0.15)]">
+                    <i class="fas fa-gamepad text-4xl"></i>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-display font-black text-white mb-4 uppercase tracking-widest">
+                    The Gaming <span class="text-neon-red">Groot</span>
+                </h2>
+                <p class="text-gray-400 text-lg mb-8 max-w-2xl mx-auto font-light leading-relaxed">
+                    When I'm not writing code or engineering hardware, I run a YouTube channel dedicated to gaming content. It's a space where I share gameplay, build a community, and connect with fellow enthusiasts globally.
+                </p>
+                <a href="https://www.youtube.com/@coding_guy_007" target="_blank" class="interactive inline-flex items-center gap-3 px-8 py-4 bg-transparent border border-neon-red hover:bg-neon-red text-white font-bold tracking-wider transition-all duration-300 uppercase text-sm rounded-sm shadow-[0_0_15px_rgba(255,0,60,0.3)]">
+                    <i class="fab fa-youtube text-lg"></i> Visit My Channel
+                </a>
+            </div>
+        </section>
+
+        <!-- FOOTER / CONTACT -->
+        <footer class="py-16 text-center relative bg-[#050505] border-t border-gray-900">
+            <h3 class="text-xl font-display font-bold text-gray-500 mb-8 uppercase tracking-widest">Connect</h3>
+            
+            <div class="flex justify-center gap-6 mb-12">
+                <a href="https://github.com/srijith230907" target="_blank" class="interactive w-14 h-14 bg-black rounded-lg border border-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:border-white hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all duration-300">
+                    <i class="fab fa-github text-2xl"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/srijith-srivathsa-34664737a" target="_blank" class="interactive w-14 h-14 bg-black rounded-lg border border-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:border-[#0077b5] hover:shadow-[0_0_20px_rgba(0,119,181,0.6)] transition-all duration-300">
+                    <i class="fab fa-linkedin-in text-2xl"></i>
+                </a>
+                <a href="mailto:srijithsrivathsa37@gmail.com" class="interactive w-14 h-14 bg-black rounded-lg border border-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:border-neon-red hover:shadow-[0_0_20px_var(--neon-red-glow)] transition-all duration-300">
+                    <i class="fas fa-envelope text-2xl"></i>
+                </a>
+                <a href="https://www.youtube.com/@coding_guy_007" target="_blank" class="interactive w-14 h-14 bg-black rounded-lg border border-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:border-[#ff0000] hover:shadow-[0_0_20px_rgba(255,0,0,0.6)] transition-all duration-300">
+                    <i class="fab fa-youtube text-2xl"></i>
+                </a>
+            </div>
+
+            <p class="text-xs text-gray-700 uppercase tracking-[0.2em] font-medium font-display">
+                &copy; 2024 Srijith Srivathsa. All Rights Reserved.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // --- STRICT SECURITY & ANTI-COPY MEASURES ---
+        document.addEventListener('contextmenu', event => event.preventDefault()); // Right click
+        document.addEventListener('dragstart', event => event.preventDefault());   // Dragging
+        document.addEventListener('selectstart', event => event.preventDefault()); // Selection
+        
+        // Prevent common devtools/copy keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                const forbiddenKeys = ['c', 'u', 'i', 'j', 's', 'a', 'p'];
+                if (forbiddenKeys.includes(e.key.toLowerCase())) {
+                    e.preventDefault();
+                }
+            }
+        });
+
+        // --- CUSTOM TAILLIGHT CURSOR LOGIC ---
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorTrail = document.getElementById('cursor-trail');
+        const interactives = document.querySelectorAll('.interactive, a, button');
+        
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let trailX = window.innerWidth / 2;
+        let trailY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+        });
+
+        function animateCursor() {
+            // Lerp for smooth trailing
+            let dx = mouseX - trailX;
+            let dy = mouseY - trailY;
+            
+            trailX += dx * 0.15;
+            trailY += dy * 0.15;
+            
+            cursorTrail.style.left = `${trailX}px`;
+            cursorTrail.style.top = `${trailY}px`;
+            
+            // Stretch effect based on velocity (taillight streak)
+            let speed = Math.sqrt(dx*dx + dy*dy);
+            if (!document.body.classList.contains('cursor-hover')) {
+                if (speed > 3) {
+                    let angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                    let stretch = Math.min(speed, 50); // Cap the stretch
+                    cursorTrail.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+                    cursorTrail.style.width = `${20 + stretch}px`;
+                    cursorTrail.style.borderRadius = '50px';
+                } else {
+                    cursorTrail.style.transform = `translate(-50%, -50%) rotate(0deg)`;
+                    cursorTrail.style.width = `20px`;
+                    cursorTrail.style.borderRadius = '50%';
+                }
+            }
+            
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Hover States
+        interactives.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                document.body.classList.add('cursor-hover');
+                cursorTrail.style.width = ''; // Let CSS take over
+                cursorTrail.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            });
+            el.addEventListener('mouseleave', () => {
+                document.body.classList.remove('cursor-hover');
+            });
+        });
+
+        // --- EXHAUST SPARK CLICK ANIMATION ---
+        document.addEventListener('click', (e) => {
+            // Don't spawn sparks if clicking a link/button to avoid interrupting UX too much
+            if(e.target.closest('a') || e.target.closest('button')) return;
+
+            const numSparks = Math.floor(Math.random() * 4) + 5; // 5 to 8 sparks
+            
+            for (let i = 0; i < numSparks; i++) {
+                const spark = document.createElement('div');
+                spark.classList.add('exhaust-spark');
+                
+                spark.style.left = `${e.clientX}px`;
+                spark.style.top = `${e.clientY}px`;
+                
+                // Random outward trajectory
+                const angle = (Math.random() * Math.PI * 2);
+                const distance = 40 + Math.random() * 60;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance + 10; 
+                const rot = (Math.random() - 0.5) * 180;
+                
+                spark.style.setProperty('--tx', `${tx}px`);
+                spark.style.setProperty('--ty', `${ty}px`);
+                spark.style.setProperty('--rot', `${rot}deg`);
+                
+                document.body.appendChild(spark);
+                
+                setTimeout(() => spark.remove(), 600);
+            }
+        });
+
+        // --- 3D TILT EFFECT FOR CARDS ---
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Calculate rotation (max 10 degrees for smoothness)
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                
+                // Dynamic glare effect based on mouse position
+                card.style.background = `
+                    radial-gradient(
+                        circle at ${x}px ${y}px, 
+                        rgba(255,255,255,0.08) 0%, 
+                        rgba(15,15,15,0.65) 60%
+                    )
+                `;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                card.style.background = `rgba(15, 15, 15, 0.65)`;
+            });
+        });
+
+        // --- SCROLL REVEAL ANIMATION ---
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, { 
+            threshold: 0.15, 
+            rootMargin: "0px 0px -50px 0px" 
+        });
+        
+        revealElements.forEach(el => {
+            if(!el.classList.contains('active')) {
+                revealObserver.observe(el);
+            }
+        });
+    </script>
+</body>
+</html>
